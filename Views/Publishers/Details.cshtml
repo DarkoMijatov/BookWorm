@@ -1,0 +1,65 @@
+﻿@model BookWorm.Models.Publisher
+
+@{
+    ViewBag.Title = Model.Name;
+
+    List<BookWorm.Models.Author> authors = new List<BookWorm.Models.Author>();
+    foreach(var name in Model.Authors)
+    {
+        authors.Add(BookWorm.Helpers.AuthorsHelper.GetAuthors().Where(a => a.Name == name).First());
+    }
+}
+
+<h2>Detalji o izdavaču</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal jumbotron" style="background-color: #cccccc">
+        <dt>
+            Naziv
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Država
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            Autori
+        </dt>
+
+        <dd>
+            <ul>
+                @foreach (var author in authors)
+                {
+                    <li>@Html.DisplayFor(model => author.Name)</li>
+                    <ul style="list-style-type: disc;">
+                        @{
+                            List<BookWorm.Models.Book> books = new List<BookWorm.Models.Book>();
+                            foreach (string name in author.Books)
+                            {
+                                books.Add(BookWorm.Helpers.BooksHelper.GetBooks().Where(b => b.Title == name && b.Publisher == Model.Name).First());
+                            }
+                            foreach (var book in books)
+                            {
+                                <li><q>@Html.DisplayFor(model => book.Title)</q> (@Html.DisplayFor(model => book.Year)) <i>@Html.DisplayFor(model => book.Genre)</i></li>
+                            }
+                        }
+                    </ul>
+                }
+            </ul>
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Nazad na listu izdavača", "Index")
+</p>

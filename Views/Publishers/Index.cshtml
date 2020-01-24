@@ -1,0 +1,54 @@
+﻿@model PagedList.IPagedList<BookWorm.Models.Publisher>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Izdavači";
+}
+
+<h2>Lista izdavača</h2>
+
+<p>
+    @Html.ActionLink("Novi izdavač", "Create")
+</p>
+<table class="table table-bordered" style="background-color: #cccccc">
+    <tr class="navbar-inverse">
+        <th>
+            @Html.ActionLink("Naziv", "Index", new { sortOrder = ViewBag.NameSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Država", "Index", new { sortOrder = ViewBag.CountrySortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Autori", "Index", new { sortOrder = ViewBag.AuthorsSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @foreach (var author in item.Authors)
+                {
+                    <div>@Html.DisplayFor(modelItem => author)</div>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Detalji", "Details", new { id = item.Id })
+            </td>
+        </tr>
+    }
+
+</table>
+<br />
+<div>
+    Strana  @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) od @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>

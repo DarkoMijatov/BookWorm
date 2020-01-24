@@ -1,0 +1,118 @@
+﻿@model BookWorm.Models.Book
+
+@{
+    ViewBag.Title = "Nova knjiga";
+
+    List<string> genreList = BookWorm.Helpers.BooksHelper.GetGenres();
+    List<SelectListItem> genres = new List<SelectListItem>();
+    foreach(string genre in genreList)
+    {
+        genres.Add(new SelectListItem { Text = genre, Value = genre });
+    }
+
+    List<BookWorm.Models.Author> authorList = BookWorm.Helpers.AuthorsHelper.GetAuthors();
+    List<SelectListItem> authors = new List<SelectListItem>();
+    foreach(BookWorm.Models.Author author in authorList)
+    {
+        authors.Add(new SelectListItem { Text = author.Name, Value = author.Name });
+    }
+
+    List<BookWorm.Models.Publisher> publisherList = BookWorm.Helpers.PublishersHelper.GetPublishers();
+    List<SelectListItem> publishers = new List<SelectListItem>();
+    foreach(BookWorm.Models.Publisher publisher in publisherList)
+    {
+        publishers.Add(new SelectListItem { Text = publisher.Name, Value = publisher.Name });
+    }
+}
+
+<h2>Podaci o novoj knjizi</h2>
+
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Title, "Naslov", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Title, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, "Autor", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Author, authors, new { @class = "form-control input-xlarge", @type = "text", @autocomplete = "on" })
+                @Html.ValidationMessageFor(model => model.Author, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Publisher, "Izdavač", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Publisher, publishers, new { @class = "form-control input-xlarge", @type = "text", @autocomplete = "on" })
+                @Html.ValidationMessageFor(model => model.Publisher, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Year, "Godina", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Genre, "Žanr", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Genre, genres, new { @class = "form-control input-xlarge", @type="text", @autocomplete="on"  })
+                @Html.ValidationMessageFor(model => model.Genre, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Language, "Jezik", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Language, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Language, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Read, "Pročitana", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <div class="checkbox checkbox-inline" style="height: 100%; padding-left: 20px">
+                    @Html.EditorFor(model => model.Read)
+                    @Html.ValidationMessageFor(model => model.Read, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Description, "Opis", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Kreiraj" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Nazad na listu knjiga", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

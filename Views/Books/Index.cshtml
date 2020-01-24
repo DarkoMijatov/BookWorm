@@ -1,0 +1,84 @@
+﻿@model PagedList.IPagedList<BookWorm.Models.Book>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Knjige";
+}
+
+<h2>Lista knjiga</h2>
+
+<p>
+    @Html.ActionLink("Nova knjiga", "Create")
+</p>
+
+@using (@Html.BeginForm("Index", "Books", FormMethod.Get))
+{
+<p>
+    Pretraga: @Html.TextBox("searchString", ViewBag.CurrentFilter as string, new { @class = "form-control", @style = "display : inline"})
+</p>
+}
+
+<table class="table table-bordered" style="background-color: #cccccc">
+    <tr class="navbar-inverse">
+        <th>
+            @Html.ActionLink("Naslov", "Index", new { sortOrder = ViewBag.TitleSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Autor", "Index", new { sortOrder = ViewBag.AuthorSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Izdavač", "Index", new { sortOrder = ViewBag.PublisherSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Godina", "Index", new { sortOrder = ViewBag.YearSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Žanr", "Index", new { sortOrder = ViewBag.GenreSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Jezik", "Index", new { sortOrder = ViewBag.LanguageSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>
+            @Html.ActionLink("Pročitana", "Index", new { sortOrder = ViewBag.ReadSortParam, currentFilter = ViewBag.CurrentFilter })
+        </th>
+        <th>@Html.ActionLink("Akcije", "")</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Author)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Publisher)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Year)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Genre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Language)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Read)
+        </td>
+        <td>
+            @Html.ActionLink("Izmeni", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Detalji", "Details", new { id = item.Id }) |
+            @Html.ActionLink("Obriši", "Delete", new { id = item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<br />
+<div>
+    Strana  @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) od @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))   
+</div>

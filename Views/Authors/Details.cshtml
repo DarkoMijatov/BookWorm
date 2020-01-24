@@ -1,0 +1,47 @@
+﻿@model BookWorm.Models.Author
+
+@{
+    ViewBag.Title = Model.Name;
+
+    List<BookWorm.Models.Book> books = BookWorm.Helpers.BooksHelper.GetBooks().Where(book => book.Author == Model.Name).ToList();
+}
+
+<h2>Detalji o autoru</h2>
+
+<div>
+    <hr />
+    <dl class="dl-horizontal jumbotron" style="background-color: #cccccc">
+        <dt>
+            Ime
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            Država
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            Knjige
+        </dt>
+
+        <dd>
+            <ul>
+                @foreach (var book in books)
+                {
+                    <li><q>@Html.DisplayFor(model => book.Title)</q> (@Html.DisplayFor(model => book.Year)) <i>@Html.DisplayFor(model => book.Genre)</i></li>
+                }
+            </ul>
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Nazad na listu autora", "Index")
+</p>

@@ -1,0 +1,87 @@
+﻿@model BookWorm.Models.Book
+
+@{
+    ViewBag.Title = Model.Title;
+}
+
+<h2>Brisanje knjige</h2>
+
+<h3>Da li ste sigurni da želite da obrišete knjigu?</h3>
+<div>
+    <hr />
+    <dl class="dl-horizontal jumbotron" style="background-color: #cccccc">
+        <dt>
+            Naslov
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            Autor
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Author)
+        </dd>
+
+        <dt>
+            Izdavač
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Publisher)
+        </dd>
+
+        <dt>
+            Godina
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Year)
+        </dd>
+
+        <dt>
+            Žanr
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Genre)
+        </dd>
+
+        <dt>
+            Jezik
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Language)
+        </dd>
+
+        <dt>
+            Pročitana
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Read)
+        </dd>
+
+        <dt>
+            Opis
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+<div class="form-actions no-color">
+    <input type="submit" value="Obriši" class="btn btn-default" /> |
+    @Html.ActionLink("Nazad na listu knjiga", "Index")
+</div>
+    }
+</div>
